@@ -2,7 +2,7 @@ Authors:
  chadrockey@gmail.com (Chad Rockey)
  axelfurlan@gmail.com (Axel Furlan)
 
-This is an extension to the first version of the Ros Android Sensors Driver.
+This is an extension to the first version of the Ros Android Camera Driver.
 It extends the driver to camera readings and updates the previous version to the post-gradle shift of the rosjava libs.
 Two compression methods are currently supported, PNG and JPEG (with selectable compression quality).
 The topic names are:
@@ -26,10 +26,12 @@ Android OpenCV:
 
 Once your environment is set, do the following steps:
  1) git clone the repo in the android_core folder (the same folder where tutorials are).
- 2) Edit the settings.gradle file in the android_core folder, adding 'android_sensors_driver' at the end of the include list.
- 3) cd android_sensors_driver; ../gradlew clean debug
+ 2) Edit the settings.gradle file in the android_core folder, adding 'android_camera_driver' at the end of the include list.
+ 3) cd android_camera_driver; ../gradlew clean debug
 
 Install the appropriate OpenCV from Google Play.
+https://play.google.com/store/apps/details?id=org.opencv.engine&hl=en
+The manager will tell you which OpenCV is required for your hardware.  Then search in the market and install the appropriate version.
 
 For the whole process of building, packing, installing into the phone and running the app in debug mode, use the buildAll.sh script.
 

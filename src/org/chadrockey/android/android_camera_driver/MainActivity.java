@@ -61,7 +61,7 @@ public class MainActivity extends RosActivity
 
   public MainActivity()
   {
-	  super("CameraDriver", "CameraDriver");
+	  super("ROS Android Camera Driver", "ROS Android Camera Driver");
   }
   
   @Override
