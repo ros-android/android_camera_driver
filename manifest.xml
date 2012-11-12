@@ -1,0 +1,9 @@
+<package>
+  <description brief="android_camera_driver">
+     android_camera_driver
+  </description>
+  <author>Chad Rockey (chadrockey@google.com)</author>
+  <license>Apache 2.0</license>
+  <review status="unreviewed" notes="" />
+  <url>http://ros.org/wiki/android_camera_driver</url>
+</package>
