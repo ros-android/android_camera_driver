@@ -14,7 +14,7 @@
  * the License.
  */
 
-package org.chadrockey.android.android_camera_driver;
+package org.ros.android.android_camera_driver;
 
 import android.content.Context;
 import android.hardware.SensorManager;

@@ -1,4 +1,4 @@
-package org.chadrockey.android.android_camera_driver;
+package org.ros.android.android_camera_driver;
 
 import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
