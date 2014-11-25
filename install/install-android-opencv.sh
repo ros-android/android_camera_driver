@@ -1,5 +1,7 @@
 #!/bin/bash
 
+PREFIX=~/prefix
+
 #from http://blog.hig.no/gtl/2014/08/28/opencv-and-android-studio/
 #downlaod opencv android sdk
 cd ~/Downloads
@@ -9,9 +11,9 @@ unzip OpenCV-android-sdk.zip "OpenCV-2.4.10-android-sdk/sdk/java/*" -d ~/Downloa
 mv OpenCV-2.4.10-android-sdk/sdk/java . 
 rm -rf OpenCV-android-sdk.zip OpenCV-2.4.10-android-sdk
 mv java opencv
-rm -rf ~/rosjava/src/android_core/opencv
-mv opencv ~/rosjava/src/android_core/
-cd ~/rosjava/src/android_core/opencv
+rm -rf ${PREFIX}/rosjava/src/android_core/opencv
+mv opencv ${PREFIX}/rosjava/src/android_core/
+cd ${PREFIX}/rosjava/src/android_core/opencv
 
 #create build.gradle
 cat << EOF > build.gradle
@@ -54,5 +56,5 @@ EOF
 cd ..
 echo "include \"opencv\"">> settings.gradle
 
-cd ~/rosjava/
+cd ${PREFIX}/rosjava/
 catkin_make
