@@ -16,9 +16,6 @@
 
 package org.ros.android.android_camera_driver;
 
-import android.content.Context;
-import android.hardware.SensorManager;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -26,6 +23,7 @@ import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.Window;
 import android.view.WindowManager;
+
 import org.ros.address.InetAddressFactory;
 import org.ros.android.RosActivity;
 import org.ros.node.NodeConfiguration;
@@ -45,17 +43,18 @@ public class MainActivity extends RosActivity
   // OpenCV Camera
   private static final String TAG             = "SENSORS::MainActivity";
 
-  public static final int     VIEW_MODE_RGBA  = 0;
-  public static final int     VIEW_MODE_GRAY  = 1;
-  public static final int     VIEW_MODE_CANNY = 2;
+  public static final int       VIEW_MODE_RGB   = 0;
+  public static final int       VIEW_MODE_GRAY  = 1;
+  public static final int       VIEW_MODE_CANNY = 2;
   
-  public static final int     IMAGE_TRANSPORT_COMPRESSION_NONE = 0;
-  public static final int     IMAGE_TRANSPORT_COMPRESSION_PNG = 1;
-  public static final int     IMAGE_TRANSPORT_COMPRESSION_JPEG = 2;
+  public static final int       IMAGE_TRANSPORT_COMPRESSION_NONE    = 0;
+  public static final int       IMAGE_TRANSPORT_COMPRESSION_PNG     = 1;
+  public static final int       IMAGE_TRANSPORT_COMPRESSION_JPEG    = 2;
 
-  public static int           viewMode        = VIEW_MODE_RGBA;
-  public static int			  imageCompression = IMAGE_TRANSPORT_COMPRESSION_JPEG;
-  public static int			  imageCompressionQuality = 80;
+  public static int             viewMode                    = VIEW_MODE_RGB;
+  public static int			    imageCompression            = IMAGE_TRANSPORT_COMPRESSION_JPEG;
+  public static int             imageJPEGCompressionQuality = 80;
+  public static int             imagePNGCompressionQuality  = 80;
   
   
 
@@ -100,51 +99,62 @@ public class MainActivity extends RosActivity
   public boolean onCreateOptionsMenu(Menu menu) {
 
 	  SubMenu subPreview = menu.addSubMenu("Color settings");
-      subPreview.add(1,VIEW_MODE_RGBA,0,"RGB Color").setChecked(true);
-      subPreview.add(1,VIEW_MODE_GRAY,0,"Grayscale");
+      subPreview.add(1, VIEW_MODE_RGB,0,"RGB Color").setChecked(true);
+      subPreview.add(1,VIEW_MODE_GRAY,0,"Gray Scale");
       subPreview.add(1,VIEW_MODE_CANNY,0,"Canny edges");
       subPreview.setGroupCheckable(1, true, true);
       
       SubMenu subCompression = menu.addSubMenu("Compression");
-//      subCompression.add(2,IMAGE_TRANSPORT_COMPRESSION_NONE,0,"None");
-      subCompression.add(2,IMAGE_TRANSPORT_COMPRESSION_PNG,0,"Png");
+      //subCompression.add(2,IMAGE_TRANSPORT_COMPRESSION_NONE,0,"None");
+      SubMenu subPNGCompressionRate = subCompression.addSubMenu(2, IMAGE_TRANSPORT_COMPRESSION_PNG, 0, "Png");
+      subPNGCompressionRate.setHeaderTitle("Compression quality");
+      subPNGCompressionRate.getItem().setChecked(true);
+      subPNGCompressionRate.add(4, 50, 0, "50");
+      subPNGCompressionRate.add(4, 60, 0, "60");
+      subPNGCompressionRate.add(4, 70, 0, "70");
+      subPNGCompressionRate.add(4, 80, 0, "80").setChecked(true);
+      subPNGCompressionRate.add(4, 90, 0, "90");
+      subPNGCompressionRate.add(4, 100, 0, "100");
+      subPNGCompressionRate.setGroupCheckable(4, true, true);
       
-      SubMenu subCompressionRate = subCompression.addSubMenu(2,IMAGE_TRANSPORT_COMPRESSION_JPEG,0,"Jpeg");
+      SubMenu subJPEGCompressionRate = subCompression.addSubMenu(2,IMAGE_TRANSPORT_COMPRESSION_JPEG,0,"Jpeg");
       subCompression.setGroupCheckable(2, true, true);
-      subCompressionRate.setHeaderTitle("Compression quality");
-      subCompressionRate.getItem().setChecked(true);
-      subCompressionRate.add(3,50,0,"50");
-      subCompressionRate.add(3,60,0,"60");
-      subCompressionRate.add(3,70,0,"70");
-      subCompressionRate.add(3,80,0,"80").setChecked(true);
-      subCompressionRate.add(3,90,0,"90");
-      subCompressionRate.add(3,100,0,"100");
-      subCompressionRate.setGroupCheckable(3, true, true);
+      subJPEGCompressionRate.setHeaderTitle("Compression quality");
+      subJPEGCompressionRate.getItem().setChecked(true);
+      subJPEGCompressionRate.add(3, 50, 0, "50");
+      subJPEGCompressionRate.add(3, 60, 0, "60");
+      subJPEGCompressionRate.add(3, 70, 0, "70");
+      subJPEGCompressionRate.add(3, 80, 0, "80").setChecked(true);
+      subJPEGCompressionRate.add(3, 90, 0, "90");
+      subJPEGCompressionRate.add(3, 100, 0, "100");
+      subJPEGCompressionRate.setGroupCheckable(3, true, true);
 
-      return true;
+      return super.onCreateOptionsMenu(menu);
   }
 
   @Override
   public boolean onOptionsItemSelected(MenuItem item)
-  {      
-      if(item.getGroupId() == 1)
+  {
+      switch (item.getGroupId())
       {
-    	  viewMode = item.getItemId();
-    	  item.setChecked(true);
+          case 1:
+              viewMode = item.getItemId();
+              item.setChecked(true);
+              break;
+          case 2:
+              imageCompression = item.getItemId();
+              item.setChecked(true);
+              break;
+          case 3:
+              imageJPEGCompressionQuality = item.getItemId();
+              item.setChecked(true);
+              break;
+          case 4:
+              imagePNGCompressionQuality = item.getItemId();
+              item.setChecked(true);
+              break;
       }
-      
-      if(item.getGroupId() == 2)
-      {
-    	  imageCompression = item.getItemId();
-    	  item.setChecked(true);
-      }
-      
-      if(item.getGroupId() == 3)
-      {
-    	  imageCompressionQuality = item.getItemId();
-    	  item.setChecked(true);
-      }
-      return true;
+      return super.onOptionsItemSelected(item);
   }
 
   @Override
@@ -155,6 +165,5 @@ public class MainActivity extends RosActivity
     nodeConfiguration.setNodeName("android_camera_driver");
     this.cam_pub = new CameraPublisher(this);
     nodeMainExecutor.execute(this.cam_pub, nodeConfiguration);
-    
   }
 }
