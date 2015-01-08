@@ -1,11 +1,5 @@
 package org.ros.android.android_camera_driver;
 
-import java.util.List;
-
-import org.opencv.core.Size;
-import org.opencv.highgui.VideoCapture;
-import org.opencv.highgui.Highgui;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -13,15 +7,21 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import org.opencv.core.Size;
+import org.opencv.highgui.Highgui;
+import org.opencv.highgui.VideoCapture;
+
+import java.util.List;
+
 /**
-* @author axelfurlan@gmail.com (Axel Furlan)
-*/
+ * @author axelfurlan@gmail.com (Axel Furlan)
+ */
 
 public abstract class SampleCvViewBase extends SurfaceView implements SurfaceHolder.Callback, Runnable {
     private static final String TAG = "SENSORS::SurfaceView";
 
-    private SurfaceHolder       mHolder;
-    private VideoCapture        mCamera;
+    private SurfaceHolder mHolder;
+    private VideoCapture mCamera;
 
     public SampleCvViewBase(Context context) {
         super(context);
@@ -33,33 +33,32 @@ public abstract class SampleCvViewBase extends SurfaceView implements SurfaceHol
     public boolean openCamera() {
         Log.i(TAG, "openCamera");
         synchronized (this) {
-	        releaseCamera();
-	        mCamera = new VideoCapture(Highgui.CV_CAP_ANDROID);
-	        if (!mCamera.isOpened()) {
-	            mCamera.release();
-	            mCamera = null;
-	            Log.e(TAG, "Failed to open native camera");
-	            return false;
-	        }
-	    }
+            releaseCamera();
+            mCamera = new VideoCapture(Highgui.CV_CAP_ANDROID);
+            if (!mCamera.isOpened()) {
+                mCamera.release();
+                mCamera = null;
+                Log.e(TAG, "Failed to open native camera");
+                return false;
+            }
+        }
         return true;
     }
-    
+
     public void releaseCamera() {
         Log.i(TAG, "releaseCamera");
         synchronized (this) {
-	        if (mCamera != null) {
-	                mCamera.release();
-	                mCamera = null;
+            if (mCamera != null) {
+                mCamera.release();
+                mCamera = null;
             }
         }
     }
-    
+
     public void setupCamera(int width, int height) {
-        Log.i(TAG, "setupCamera out("+width+", "+height+")");
+        Log.i(TAG, "setupCamera out(" + width + ", " + height + ")");
         synchronized (this) {
-            if (mCamera != null && mCamera.isOpened())
-            {
+            if (mCamera != null && mCamera.isOpened()) {
                 List<Size> sizes = mCamera.getSupportedPreviewSizes();
                 int mFrameWidth = width;
                 int mFrameHeight = height;
@@ -68,7 +67,7 @@ public abstract class SampleCvViewBase extends SurfaceView implements SurfaceHol
                 {
                     double minDiff = Double.MAX_VALUE;
                     for (Size size : sizes) {
-                        if ((Math.abs(size.height - height) + Math.abs(size.width - width))< minDiff) {
+                        if ((Math.abs(size.height - height) + Math.abs(size.width - width)) < minDiff) {
                             mFrameWidth = (int) size.width;
                             mFrameHeight = (int) size.height;
                             minDiff = Math.abs(size.height - height);
@@ -83,18 +82,18 @@ public abstract class SampleCvViewBase extends SurfaceView implements SurfaceHol
                 mCamera.set(Highgui.CV_CAP_PROP_ANDROID_WHITE_BALANCE, Highgui.CV_CAP_ANDROID_WHITE_BALANCE_FLUORESCENT);
 //                mCamera.set(Highgui.CV_CAP_PROP_IOS_DEVICE_EXPOSURE,
 //                Log.i(TAG, "setupCamera 6: " + mCamera.get(Highgui.CV_CAP_PROP_IOS_DEVICE_EXPOSURE));
-                
+
                 mCamera.set(Highgui.CV_CAP_PROP_FRAME_WIDTH, mFrameWidth);
                 mCamera.set(Highgui.CV_CAP_PROP_FRAME_HEIGHT, mFrameHeight);
             }
         }
 
     }
-    
+
     public void surfaceChanged(SurfaceHolder _holder, int format, int width, int height) {
         Log.i(TAG, "surfaceChanged");
 //        setupCamera(width, height);
-        setupCamera(640,480);
+        setupCamera(640, 480);
     }
 
     public void surfaceCreated(SurfaceHolder holder) {
@@ -128,8 +127,7 @@ public abstract class SampleCvViewBase extends SurfaceView implements SurfaceHol
 
             if (bmp != null) {
                 Canvas canvas = mHolder.lockCanvas();
-                if (canvas != null)
-                {
+                if (canvas != null) {
                     canvas.drawBitmap(bmp, (canvas.getWidth() - bmp.getWidth()) / 2, (canvas.getHeight() - bmp.getHeight()) / 2, null);
                     mHolder.unlockCanvasAndPost(canvas);
                 }
