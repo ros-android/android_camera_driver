@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical">
+    xmlns:opencv="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
 
-    <org.ros.android.view.camera.RosCameraPreviewView
-        android:id="@+id/ros_camera_preview_view"
+    <org.opencv.android.JavaCameraView
+        android:id="@+id/HelloOpenCvView"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"/>
+        android:layout_height="fill_parent"
+        android:visibility="gone"
+        opencv:camera_id="any"/>
 
     <org.ros.android.view.RosTextView
         android:id="@+id/text"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textSize="30dip"/>
-
+        android:textSize="30sp"/>
 </LinearLayout>

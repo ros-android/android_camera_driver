@@ -42,7 +42,8 @@
     <!-- quick check on sdk.dir -->
     <fail
         message="sdk.dir is missing. Make sure to generate local.properties using 'android update project' or to inject it through an env var"
-        unless="sdk.dir"/>
+        unless="sdk.dir"
+        />
 
     <!--
         Import per project custom build rules if present at the root of the project.
