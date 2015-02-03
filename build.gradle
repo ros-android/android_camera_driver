@@ -15,9 +15,24 @@
  */
 
 dependencies {
-  compile 'ros.rosjava_core:rosjava_tutorial_pubsub:0.0.0-SNAPSHOT'
+    compile('org.ros.rosjava_core:rosjava:[0.1,0.2)')
+    compile('org.ros.android_core:android_gingerbread_mr1:[0.1,0.2)')
+    compile project(':opencv')
+}
+
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 21
+
+    defaultConfig {
+        minSdkVersion 10
+        applicationId "org.ros.android.android_camera_driver"
+        targetSdkVersion 15
+        versionCode 1
+        versionName "1.0"
+    }
 }
 
 
-debug.dependsOn project(':android_gingerbread_mr1').tasks.debug
 

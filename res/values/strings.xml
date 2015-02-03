@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ROS Android Camera Driver</string>
+    <string name="app_name">ROS Camera Driver</string>
+    <string name="robot_name">Robot Name:</string>
+    <string name="phone1">phone1</string>
 </resources>
